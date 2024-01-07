@@ -1,0 +1,15 @@
+llb\common\entity\Item.class
+llb\common\BaseServiceInterface.class
+llb\common\entity\Reflection.class
+llb\common\BaseServiceImpl.class
+llb\common\BaseInterface.class
+llb\common\entity\Other.class
+llb\common\BaseGoods.class
+llb\common\BaseDao.class
+llb\common\entity\Apparatus.class
+llb\common\entity\Loaded.class
+llb\common\entity\Analyse.class
+llb\common\entity\Food.class
+llb\common\entity\Treat.class
+llb\common\BasePojo.class
+llb\common\entity\User.class

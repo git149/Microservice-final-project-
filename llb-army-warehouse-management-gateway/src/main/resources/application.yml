@@ -1,0 +1,32 @@
+# 端口
+server:
+  port: 7999
+spring:
+  application:
+    name: system-gateway
+
+
+  cloud:
+    gateway:
+      #调用服务端 http://localhost:7999/system-provider/Test/getAll
+      discovery:
+        locator:
+          enabled: true #开启Eureka服务发现
+          lower-case-service-id: true
+      routes:
+        #当访问地址 : http://localhost:7999/search?q=%E4%B8%96%E7%95%8C%E6%97%85%E6%B8%B8%E8%83%9C%E5%9C%B0&FORM=HDRSC1
+        #会路由到上游地址 https://cn.bing.com/search?q=%e4%b8%96%e7%95%8c%e6%97%85%e6%b8%b8%e8%83%9c%e5%9c%b0&FORM=HDRSC1
+        - id: url-proxy-test
+          uri: https://cn.bing.com
+          predicates:
+            - Path=/searchBing
+eureka:
+  client:
+    # 表示将自己注册进Eureka Server默认为true
+    register-with-eureka: true
+    # 是否从Eureka Server抓去已有的注册信息，默认是true
+    fetch-registry: true
+    # 设置与Eureka Server交互的地址查询服务和注册服务都需要依赖这个地址
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+

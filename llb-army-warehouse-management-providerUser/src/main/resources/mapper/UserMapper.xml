@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="llb.system.dao.UserDAO">
+    <sql id="BaseSearchSQL">
+        <where>
+            <if test="id !=null">
+                and `id` = #{id}
+            </if>
+            <if test="isDel !=null">
+                and `isDel` = #{isDel}
+            </if>
+            <if test="isDel == null">
+                and `isDel` = 1
+            </if>
+            <if test="time !=null">
+                and `time` = #{time}
+            </if>
+
+            <if test="name !=null">
+                and `name` like CONCAT(CONCAT('%', #{name}), '%')
+            </if>
+            <if test="account !=null">
+                and `account` = #{account}
+            </if>
+            <if test="pw !=null">
+                and `pw` = #{pw}
+            </if>
+            <if test="sex !=null">
+                and `sex` = #{sex}
+            </if>
+            <if test="iphone !=null">
+                and `iphone` = #{iphone}
+            </if>
+
+        </where>
+        order by time desc
+    </sql>
+    <select id="getAll2Page" resultType="llb.common.entity.User">
+        select *
+        from `User`
+        <include refid="BaseSearchSQL"/>
+        <if test="page !=null">
+            limit ${(page -1 ) * rows},#{rows}
+        </if>
+    </select>
+
+    <select id="getAll" resultType="llb.common.entity.User">
+        select *
+        from `User`
+        <include refid="BaseSearchSQL"/>
+    </select>
+    <select id="get" resultType="llb.common.entity.User">
+        select *
+        from `User`
+        <include refid="BaseSearchSQL"/>
+    </select>
+    <select id="count" resultType="java.lang.Integer">
+        select count(1)
+        from `User`
+        <include refid="BaseSearchSQL"/>
+    </select>
+    <insert id="add" parameterType="llb.common.entity.User" useGeneratedKeys="true" keyProperty="id">
+        insert into `User`(`name`,`account`, `pw`,`sex`,`iphone`)
+        values (#{name},#{account}, #{pw}, #{sex}, #{iphone})
+    </insert>
+
+    <insert id="addS" parameterType="llb.common.entity.Item">
+        insert into `User`(`name`,`account`, `pw`,`sex`,`iphone`) values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.name},#{item.account}, #{item.pw}, #{item.sex}, #{item.iphone})
+        </foreach>
+    </insert>
+
+    <update id="del" parameterType="llb.common.entity.User">
+        update `User`
+        <set>
+            `time` = now(),
+            `isDel` = 2
+        </set>
+        where `id` = #{id}
+    </update>
+    <update id="update" parameterType="llb.common.entity.User">
+        update `User`
+        <set>
+            <if test="isDel !=null">
+                `isDel` = #{isDel},
+            </if>
+            <if test="account !=null">
+                `account` = #{account},
+            </if>
+            <if test="pw !=null">
+                `pw` = #{pw},
+            </if>
+            <if test="name !=null">
+                `name` = #{name},
+            </if>
+            <if test="sex !=null">
+                `sex` = #{sex},
+            </if>
+            <if test="iphone !=null">
+                `iphone` = #{iphone},
+            </if>
+
+            `time` = now(),
+        </set>
+        where `id` = #{id}
+    </update>
+</mapper>
